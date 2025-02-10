@@ -1,0 +1,56 @@
+#include <LiquidCrystal.h>
+
+int button1State = 0, lastButton1State = 0;
+int button2State = 0, lastButton2State = 0;
+int counter = 0;
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);  // Correct LCD pin connections
+
+void setup() {
+    lcd.begin(16, 2);  // Set up the LCD with 16 columns and 2 rows
+
+    pinMode(10, INPUT); // Button 1
+    pinMode(9, INPUT);  // Button 2
+
+    lcd.setCursor(2, 0);
+    lcd.print("PRESS BUTTONS");
+
+    lcd.setCursor(4, 1);
+    lcd.print(counter);
+}
+
+void loop() {
+    button1State = digitalRead(10);
+
+    // Check if button1 is pressed and state changed
+    if (button1State != lastButton1State) {
+        if (button1State == HIGH) {
+            counter++;
+            lcd.clear();
+            lcd.setCursor(2, 0);
+            lcd.print("PRESS BUTTONS");
+
+            lcd.setCursor(4, 1);
+            lcd.print(counter);
+        }
+        delay(50); // Debounce delay
+    }
+    lastButton1State = button1State;
+
+    button2State = digitalRead(9);
+
+    // Check if button2 is pressed and state changed
+    if (button2State != lastButton2State) {
+        if (button2State == HIGH) {
+            counter--;
+            lcd.clear();
+            lcd.setCursor(2, 0);
+            lcd.print("PRESS BUTTONS");
+
+            lcd.setCursor(4, 1);
+            lcd.print(counter);
+        }
+        delay(50); // Debounce delay
+    }
+    lastButton2State = button2State;
+}
